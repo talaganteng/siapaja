@@ -17,9 +17,10 @@ app.use((req, res, next) => {
 });
 
 // Setup Multer for File Uploads
-const uploadDir = path.join(__dirname, 'uploads');
+// Use /tmp for Vercel Serverless Functions (read-only filesystem)
+const uploadDir = '/tmp/uploads';
 if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
+    fs.mkdirSync(uploadDir, { recursive: true });
 }
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, uploadDir),
@@ -33,21 +34,10 @@ const dummyItems = [];
 
 const dummyReviews = [];
 
-// DB Connection config
-const dbConfig = {
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'siapaja'
-};
-
-let pool;
-try {
-    pool = mysql.createPool(dbConfig);
-    console.log('MySQL Pool created. Waiting for connections...');
-} catch (error) {
-    console.log('Failed to create MySQL Pool, will use dummy data fallback.', error.message);
-}
+let pool = null;
+// Force disable DB to prevent 10s connection timeout on Vercel Serverless
+// Running purely in fallback (in-memory) mode
+console.log('Running in fallback mode without DB.');
 
 // API Routes
 app.get('/api/items', async (req, res) => {
