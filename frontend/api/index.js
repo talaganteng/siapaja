@@ -17,7 +17,6 @@ app.use((req, res, next) => {
 });
 
 // Setup Multer for File Uploads
-// Use /tmp for Vercel Serverless Functions (read-only filesystem)
 const uploadDir = '/tmp/uploads';
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
@@ -34,10 +33,23 @@ const dummyItems = [];
 
 const dummyReviews = [];
 
-let pool = null;
-// Force disable DB to prevent 10s connection timeout on Vercel Serverless
-// Running purely in fallback (in-memory) mode
-console.log('Running in fallback mode without DB.');
+// DB Connection config
+// DB Connection config
+const dbConfig = {
+    host: 'gateway01.ap-southeast-1.prod.aws.tidbcloud.com',
+    user: 'MBnjyDAqyUp1LxV.root',
+    password: 'HNAtpvbQDgDciM5y',
+    database: 'test',
+    ssl: { minVersion: 'TLSv1.2', rejectUnauthorized: true }
+};
+
+let pool;
+try {
+    pool = mysql.createPool(dbConfig);
+    console.log('MySQL Pool created. Waiting for connections...');
+} catch (error) {
+    console.log('Failed to create MySQL Pool, will use dummy data fallback.', error.message);
+}
 
 // API Routes
 app.get('/api/items', async (req, res) => {
