@@ -39,7 +39,7 @@ const dbConfig = {
     host: 'gateway01.ap-southeast-1.prod.aws.tidbcloud.com',
     user: 'MBnjyDAqyUp1LxV.root',
     password: 'HNAtpvbQDgDciM5y',
-    database: 'test',
+    database: 'siapaja',
     ssl: { minVersion: 'TLSv1.2', rejectUnauthorized: true }
 };
 
