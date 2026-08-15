@@ -73,7 +73,7 @@ export default function ProductDetail({ user }) {
   const isRangeValid = () => {
     if (!startDate || !endDate) return false;
     const range = eachDayOfInterval({ start: startDate, end: endDate });
-    return !range.some(day => bookedDates.some(booked => booked.setHours(0,0,0,0) === day.setHours(0,0,0,0)));
+    return !range.some(day => bookedDates.some(booked => booked.toDateString() === day.toDateString()));
   };
 
   const handleBooking = () => {

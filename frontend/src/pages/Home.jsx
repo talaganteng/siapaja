@@ -27,9 +27,13 @@ export default function Home() {
   const uniqueLocations = [...new Set(items.map(item => item.location))].filter(Boolean);
 
   const filteredItems = items.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesLocation = locationFilter ? item.location === locationFilter : true;
+    const itemName = item.name || '';
+    const itemDesc = item.description || '';
+    const itemLoc = item.location || '';
+    
+    const matchesSearch = itemName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          itemDesc.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesLocation = locationFilter ? itemLoc === locationFilter : true;
     return matchesSearch && matchesLocation;
   });
 
