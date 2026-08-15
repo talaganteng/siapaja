@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag, User, Bell, LogOut, Clock, Menu, X } from 'lucide-react';
 
-import logoImg from '../assets/logo.png';
-
 export default function Navbar({ user, onLogout }) {
   const [showNotif, setShowNotif] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -39,8 +37,26 @@ export default function Navbar({ user, onLogout }) {
   return (
     <nav>
       <div className="container nav-content">
-        <Link to="/" className="nav-brand" onClick={handleMenuClick} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <img src={logoImg} alt="SiapAja Logo" style={{ height: '40px', width: 'auto' }} />
+        <Link to="/" className="nav-brand" onClick={handleMenuClick} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <svg viewBox="0 0 300 300" style={{ height: '48px', width: 'auto', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' }} xmlns="http://www.w3.org/2000/svg">
+              {/* White border/offset behind the triangle */}
+              <polygon points="10,270 270,270 270,10" fill="#ffffff" />
+              {/* Main dark blue triangle */}
+              <polygon points="20,260 260,260 260,20" fill="#0A192F" />
+              {/* Medium blue oval behind 'aja!' */}
+              <ellipse cx="180" cy="210" rx="65" ry="38" fill="#2563EB" />
+              {/* Yellow ellipse at the top tip */}
+              <ellipse cx="260" cy="20" rx="40" ry="25" transform="rotate(-30 260 20)" fill="#F9D949" stroke="#ffffff" strokeWidth="6" />
+              {/* Text: Siap */}
+              <text x="180" y="150" fontFamily="Outfit, sans-serif" fontSize="64" fontWeight="800" fill="#ffffff" textAnchor="middle" letterSpacing="-0.03em">
+                Siap
+              </text>
+              {/* Text: aja! */}
+              <text x="180" y="232" fontFamily="Outfit, sans-serif" fontSize="64" fontWeight="800" fill="#ffffff" textAnchor="middle" letterSpacing="-0.03em">
+                aja!
+              </text>
+            </svg>
+            <span style={{ fontSize: '24px', fontWeight: '800', color: 'var(--primary-color)', letterSpacing: '-0.04em' }}>SiapAja!</span>
         </Link>
         
         <button className="mobile-only mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
