@@ -1,4 +1,4 @@
-﻿import { API_URL } from '../config';
+import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Star, MapPin, ArrowRight } from 'lucide-react';
@@ -8,7 +8,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(${API_URL}/api/items)
+    fetch(`${API_URL}/api/items`)
       .then(res => res.json())
       .then(data => {
         setItems(data);
@@ -63,7 +63,7 @@ export default function Home() {
           ) : (
             <div className="grid">
               {items.map(item => (
-                <Link to={/item/} key={item.id}>
+                <Link to={`/item/${item.id}`} key={item.id}>
                   <div className="product-card">
                     <div className="product-img-wrapper">
                       <img src={item.image_url} alt={item.name} className="product-img" />
