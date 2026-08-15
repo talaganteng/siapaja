@@ -37,9 +37,8 @@ export default function Navbar({ user, onLogout }) {
   return (
     <nav>
       <div className="container nav-content">
-        <Link to="/" className="nav-brand" onClick={handleMenuClick}>
-            <span className="brand-part-1">Siap</span>
-            <span className="brand-part-2">aja!</span>
+        <Link to="/" className="nav-brand" onClick={handleMenuClick} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <img src="/logo.png" alt="SiapAja Logo" style={{ height: '40px', width: 'auto' }} />
         </Link>
         
         <button className="mobile-only mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
