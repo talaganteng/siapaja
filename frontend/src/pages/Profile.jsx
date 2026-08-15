@@ -1,4 +1,4 @@
-import { API_URL } from '../config';
+﻿import { API_URL } from '../config';
 import { useState } from 'react';
 import { Camera, User, Lock, Save, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -137,3 +137,4 @@ export default function Profile({ user, onUpdateUser }) {
     </div>
   );
 }
+

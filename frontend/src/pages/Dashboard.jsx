@@ -1,4 +1,4 @@
-import { API_URL } from '../config';
+﻿import { API_URL } from '../config';
 import { useState, useEffect, useRef } from 'react';
 import { DollarSign, Activity, ShoppingCart, CheckCircle, Package, Edit, Trash2, Eye, EyeOff, Plus, MessageSquare, X, UploadCloud, Star } from 'lucide-react';
 
@@ -271,7 +271,7 @@ export default function Dashboard({ user }) {
                 </div>
                 <div>
                   <div className="text-sm" style={{ color: 'var(--text-muted)' }}>Total Pendapatan</div>
-                  <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Rp {stats.totalRevenue.toLocaleString('id-ID')}</div>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Rp {Number(stats.totalRevenue).toLocaleString('id-ID')}</div>
                 </div>
               </div>
             </div>
@@ -320,7 +320,7 @@ export default function Dashboard({ user }) {
                         <td style={{ ...tdStyle, color: 'var(--text-muted)' }}>
                           {new Date(order.startDate).toLocaleDateString()} - {new Date(order.endDate).toLocaleDateString()}
                         </td>
-                        <td style={tdStyle}>Rp {order.totalCost.toLocaleString('id-ID')}</td>
+                        <td style={tdStyle}>Rp {Number(order.totalCost).toLocaleString('id-ID')}</td>
                         <td style={tdStyle}>
                           <span style={statusStyle(order.status)}>
                             {order.status === 'PAID' && <CheckCircle size={14} />}
@@ -373,7 +373,7 @@ export default function Dashboard({ user }) {
                           {item.name}
                         </div>
                       </td>
-                      <td style={tdStyle}>Rp {item.price_per_day.toLocaleString('id-ID')}</td>
+                      <td style={tdStyle}>Rp {Number(item.price_per_day).toLocaleString('id-ID')}</td>
                       <td style={tdStyle}>
                         {item.isVisible !== false ? (
                           <span style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Publik</span>
@@ -747,3 +747,4 @@ const statusStyle = (status) => {
     color: color
   };
 };
+

@@ -1,4 +1,4 @@
-import { API_URL } from '../config';
+﻿import { API_URL } from '../config';
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UploadCloud } from 'lucide-react';
@@ -189,3 +189,4 @@ export default function Auth({ onLogin }) {
     </div>
   );
 }
+

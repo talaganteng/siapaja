@@ -1,4 +1,4 @@
-import { API_URL } from '../config';
+﻿import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CreditCard, Wallet, Smartphone, CheckCircle, ShieldCheck, QrCode } from 'lucide-react';
@@ -70,11 +70,11 @@ export default function Checkout() {
             <h4 style={{ marginBottom: '12px', color: 'var(--accent)' }}>Sistem Revenue Splitting (Otomatis)</h4>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
               <span>Diteruskan ke Dompet Vendor (90%)</span>
-              <strong>Rp {transactionComplete.vendorRevenue.toLocaleString('id-ID')}</strong>
+              <strong>Rp {Number(transactionComplete.vendorRevenue).toLocaleString('id-ID')}</strong>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
               <span>Komisi Platform (10%)</span>
-              <strong>Rp {transactionComplete.platformRevenue.toLocaleString('id-ID')}</strong>
+              <strong>Rp {Number(transactionComplete.platformRevenue).toLocaleString('id-ID')}</strong>
             </div>
           </div>
 
@@ -83,13 +83,13 @@ export default function Checkout() {
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
               <span>Deposit Dikembalikan ke Anda</span>
               <strong style={{ color: transactionComplete.refundedDeposit > 0 ? 'var(--accent)' : 'red' }}>
-                Rp {transactionComplete.refundedDeposit.toLocaleString('id-ID')}
+                Rp {Number(transactionComplete.refundedDeposit).toLocaleString('id-ID')}
               </strong>
             </div>
             {transactionComplete.damagePenalty > 0 && (
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', color: 'red' }}>
                 <span>Potongan Denda / Kerusakan</span>
-                <strong>- Rp {transactionComplete.damagePenalty.toLocaleString('id-ID')}</strong>
+                <strong>- Rp {Number(transactionComplete.damagePenalty).toLocaleString('id-ID')}</strong>
               </div>
             )}
           </div>
@@ -191,15 +191,15 @@ export default function Checkout() {
           <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', color: 'var(--text-muted)' }}>
               <span>Total Sewa Barang</span>
-              <span>Rp {booking.rent_cost.toLocaleString('id-ID')}</span>
+              <span>Rp {Number(booking.rent_cost).toLocaleString('id-ID')}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', color: 'var(--text-muted)' }}>
               <span>Deposit (Jaminan)</span>
-              <span>Rp {booking.deposit_fee.toLocaleString('id-ID')}</span>
+              <span>Rp {Number(booking.deposit_fee).toLocaleString('id-ID')}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: '16px', fontWeight: 'bold', fontSize: '1.2rem' }}>
               <span>Total Tagihan</span>
-              <span style={{ color: 'var(--accent)' }}>Rp {booking.total_cost.toLocaleString('id-ID')}</span>
+              <span style={{ color: 'var(--accent)' }}>Rp {Number(booking.total_cost).toLocaleString('id-ID')}</span>
             </div>
           </div>
 
@@ -218,3 +218,4 @@ const methodStyle = (isActive) => ({
   background: isActive ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
   transition: 'all 0.2s ease'
 });
+

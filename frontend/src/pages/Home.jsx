@@ -1,4 +1,4 @@
-import { API_URL } from '../config';
+﻿import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Star, MapPin, ArrowRight } from 'lucide-react';
@@ -71,7 +71,7 @@ export default function Home() {
                     <div className="product-info">
                       <h3 className="product-title">{item.name}</h3>
                       <div className="product-price">
-                        Rp {item.price_per_day.toLocaleString('id-ID')} 
+                        Rp {Number(item.price_per_day).toLocaleString('id-ID')} 
                         <span className="text-sm" style={{ color: 'var(--text-muted)', fontWeight: '500' }}>/ hari</span>
                       </div>
                       
@@ -103,3 +103,4 @@ export default function Home() {
     </>
   );
 }
+

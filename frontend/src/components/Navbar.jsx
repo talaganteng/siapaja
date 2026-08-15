@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag, User, Bell, LogOut, Clock, Menu, X } from 'lucide-react';
 
+import logoImg from '../assets/logo.png';
+
 export default function Navbar({ user, onLogout }) {
   const [showNotif, setShowNotif] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -38,7 +40,7 @@ export default function Navbar({ user, onLogout }) {
     <nav>
       <div className="container nav-content">
         <Link to="/" className="nav-brand" onClick={handleMenuClick} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <img src="/logo.png" alt="SiapAja Logo" style={{ height: '40px', width: 'auto' }} />
+            <img src={logoImg} alt="SiapAja Logo" style={{ height: '40px', width: 'auto' }} />
         </Link>
         
         <button className="mobile-only mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>

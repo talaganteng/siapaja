@@ -1,4 +1,4 @@
-import { API_URL } from '../config';
+﻿import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { Package, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -59,7 +59,7 @@ export default function CustomerHistory({ user }) {
                       {new Date(order.startDate).toLocaleDateString()} - {new Date(order.endDate).toLocaleDateString()}
                     </td>
                     <td style={{ padding: '16px', fontWeight: '600' }}>
-                      Rp {order.totalCost.toLocaleString('id-ID')}
+                      Rp {Number(order.totalCost).toLocaleString('id-ID')}
                     </td>
                     <td style={{ padding: '16px' }}>
                       <span className={`status-badge ${order.status.toLowerCase()}`}>
@@ -78,3 +78,4 @@ export default function CustomerHistory({ user }) {
     </div>
   );
 }
+

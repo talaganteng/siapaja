@@ -1,4 +1,4 @@
-import { API_URL } from '../config';
+﻿import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Star, ShieldCheck, MapPin, MessageSquare, Calendar as CalendarIcon, Info, X } from 'lucide-react';
@@ -152,7 +152,7 @@ export default function ProductDetail({ user }) {
             </div>
             
             <div className="detail-price">
-              Rp {item.price_per_day.toLocaleString('id-ID')} <span className="text-sm" style={{color: 'var(--text-muted)'}}>/ hari</span>
+              Rp {Number(item.price_per_day).toLocaleString('id-ID')} <span className="text-sm" style={{color: 'var(--text-muted)'}}>/ hari</span>
             </div>
 
             <p style={{ lineHeight: 1.6, color: 'var(--text-main)', opacity: 0.9 }}>
@@ -198,16 +198,16 @@ export default function ProductDetail({ user }) {
                 {pricing && (
                   <div style={{ background: 'var(--bg-color)', border: '1px solid var(--border-color)', padding: '16px', borderRadius: '8px', marginTop: '12px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', color: 'var(--text-muted)' }}>
-                      <span>Rp {item.price_per_day.toLocaleString('id-ID')} x {pricing.durationDays} hari</span>
-                      <span>Rp {pricing.rentCost.toLocaleString('id-ID')}</span>
+                      <span>Rp {Number(item.price_per_day).toLocaleString('id-ID')} x {pricing.durationDays} hari</span>
+                      <span>Rp {Number(pricing.rentCost).toLocaleString('id-ID')}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', color: 'var(--text-muted)' }}>
                       <span>Deposit Keamanan (Dikembalikan)</span>
-                      <span>Rp {pricing.depositFee.toLocaleString('id-ID')}</span>
+                      <span>Rp {Number(pricing.depositFee).toLocaleString('id-ID')}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: '12px', fontWeight: 'bold', fontSize: '1.2rem', color: 'var(--primary-color)' }}>
                       <span>Total</span>
-                      <span style={{ color: 'var(--accent)' }}>Rp {pricing.totalCost.toLocaleString('id-ID')}</span>
+                      <span style={{ color: 'var(--accent)' }}>Rp {Number(pricing.totalCost).toLocaleString('id-ID')}</span>
                     </div>
                   </div>
                 )}
@@ -334,3 +334,4 @@ export default function ProductDetail({ user }) {
     </div>
   );
 }
+
