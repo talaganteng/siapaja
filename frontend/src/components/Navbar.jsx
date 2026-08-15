@@ -38,21 +38,23 @@ export default function Navbar({ user, onLogout }) {
     <nav>
       <div className="container nav-content">
         <Link to="/" className="nav-brand" onClick={handleMenuClick} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <svg viewBox="0 0 300 300" style={{ height: '48px', width: 'auto', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' }} xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 300 300" style={{ height: '48px', width: 'auto', borderRadius: '8px', overflow: 'hidden', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' }} xmlns="http://www.w3.org/2000/svg">
+              {/* Yellow Background */}
+              <rect width="300" height="300" fill="#F9D949" />
               {/* White border/offset behind the triangle */}
-              <polygon points="10,270 270,270 270,10" fill="#ffffff" />
+              <polygon points="-10,310 270,310 270,-10" fill="#ffffff" />
               {/* Main dark blue triangle */}
-              <polygon points="20,260 260,260 260,20" fill="#0A192F" />
+              <polygon points="0,300 260,300 260,0" fill="#0A192F" />
               {/* Medium blue oval behind 'aja!' */}
-              <ellipse cx="180" cy="210" rx="65" ry="38" fill="#2563EB" />
+              <ellipse cx="170" cy="210" rx="70" ry="45" fill="#2563EB" />
               {/* Yellow ellipse at the top tip */}
-              <ellipse cx="260" cy="20" rx="40" ry="25" transform="rotate(-30 260 20)" fill="#F9D949" stroke="#ffffff" strokeWidth="6" />
+              <ellipse cx="260" cy="0" rx="45" ry="30" transform="rotate(-30 260 0)" fill="#F9D949" stroke="#ffffff" strokeWidth="8" />
               {/* Text: Siap */}
-              <text x="180" y="150" fontFamily="Outfit, sans-serif" fontSize="64" fontWeight="800" fill="#ffffff" textAnchor="middle" letterSpacing="-0.03em">
+              <text x="170" y="145" fontFamily="Outfit, sans-serif" fontSize="72" fontWeight="800" fill="#ffffff" textAnchor="middle" letterSpacing="-0.03em">
                 Siap
               </text>
               {/* Text: aja! */}
-              <text x="180" y="232" fontFamily="Outfit, sans-serif" fontSize="64" fontWeight="800" fill="#ffffff" textAnchor="middle" letterSpacing="-0.03em">
+              <text x="170" y="235" fontFamily="Outfit, sans-serif" fontSize="72" fontWeight="800" fill="#ffffff" textAnchor="middle" letterSpacing="-0.03em">
                 aja!
               </text>
             </svg>
