@@ -1,12 +1,14 @@
 import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ShoppingBag, User, Bell, LogOut, Clock, Menu, X } from 'lucide-react';
 
 export default function Navbar({ user, onLogout }) {
   const [showNotif, setShowNotif] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isAuthPage = location.pathname === '/auth';
 
   const fetchNotifications = () => {
     if (!user) return;
@@ -61,77 +63,81 @@ export default function Navbar({ user, onLogout }) {
             <span style={{ fontSize: '24px', fontWeight: '800', color: 'var(--primary-color)', letterSpacing: '-0.04em' }}>SiapAja!</span>
         </Link>
         
-        <button className="mobile-only mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {!isAuthPage && (
+          <>
+            <button className="mobile-only mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
 
-        <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }} className={isMobileMenuOpen ? 'mobile-menu' : 'desktop-only'}>
-          <Link to="/" style={{ color: 'var(--text-main)', fontWeight: '500' }} onClick={handleMenuClick}>Katalog</Link>
-          
-          {user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-              {user.role === 'customer' && (
-                <Link to="/history" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)', fontWeight: '500' }} onClick={handleMenuClick}>
-                  <Clock size={18} /> Riwayat
-                </Link>
-              )}
-              {(user.role === 'admin' || user.role === 'vendor') && (
-                <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-main)', fontWeight: '600' }} onClick={handleMenuClick}>
-                  <User size={18} /> Dasbor
-                </Link>
-              )}
+            <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }} className={isMobileMenuOpen ? 'mobile-menu' : 'desktop-only'}>
+              <Link to="/" style={{ color: 'var(--text-main)', fontWeight: '500', textDecoration: 'none' }} onClick={handleMenuClick}>Katalog</Link>
               
-              <div style={{ position: 'relative' }}>
-                <button onClick={() => setShowNotif(!showNotif)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-main)', display: 'flex', alignItems: 'center', position: 'relative' }}>
-                  <Bell size={20} />
-                  {hasUnread && (
-                    <span style={{ position: 'absolute', top: '-2px', right: '-2px', width: '8px', height: '8px', background: '#EF4444', borderRadius: '50%', border: '2px solid white' }}></span>
+              {user ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+                  {user.role === 'customer' && (
+                    <Link to="/history" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)', fontWeight: '500', textDecoration: 'none' }} onClick={handleMenuClick}>
+                      <Clock size={18} /> Riwayat
+                    </Link>
                   )}
-                </button>
-
-                {showNotif && (
-                  <div className="notif-dropdown" style={{ background: 'var(--card-bg)', border: '1px solid var(--border-color)', position: 'absolute', top: '100%', right: 0, marginTop: '12px' }}>
-                    <div style={{ padding: '16px', borderBottom: '1px solid var(--border-color)', fontWeight: '700' }}>
-                      Notifikasi
-                    </div>
-                    <div style={{ maxHeight: '280px', overflowY: 'auto' }}>
-                      {notifications.length === 0 ? (
-                        <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)' }}>Belum ada notifikasi</div>
-                      ) : (
-                        notifications.map(notif => (
-                          <div key={notif.id} className={`notif-item ${!notif.is_read ? 'unread' : ''}`} onClick={() => markAsRead(notif.id)} style={{ cursor: 'pointer' }}>
-                            <div style={{ fontWeight: '600', marginBottom: '4px' }}>{notif.title}</div>
-                            <div style={{ color: 'var(--text-muted)' }}>{notif.message}</div>
-                          </div>
-                        ))
+                  {(user.role === 'admin' || user.role === 'vendor') && (
+                    <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-main)', fontWeight: '600', textDecoration: 'none' }} onClick={handleMenuClick}>
+                      <User size={18} /> Dasbor
+                    </Link>
+                  )}
+                  
+                  <div style={{ position: 'relative' }}>
+                    <button onClick={() => setShowNotif(!showNotif)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-main)', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                      <Bell size={20} />
+                      {hasUnread && (
+                        <span style={{ position: 'absolute', top: '-2px', right: '-2px', width: '8px', height: '8px', background: '#EF4444', borderRadius: '50%', border: '2px solid white' }}></span>
                       )}
-                    </div>
+                    </button>
+
+                    {showNotif && (
+                      <div className="notif-dropdown" style={{ background: 'var(--card-bg)', border: '1px solid var(--border-color)', position: 'absolute', top: '100%', right: 0, marginTop: '12px' }}>
+                        <div style={{ padding: '16px', borderBottom: '1px solid var(--border-color)', fontWeight: '700' }}>
+                          Notifikasi
+                        </div>
+                        <div style={{ maxHeight: '280px', overflowY: 'auto' }}>
+                          {notifications.length === 0 ? (
+                            <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)' }}>Belum ada notifikasi</div>
+                          ) : (
+                            notifications.map(notif => (
+                              <div key={notif.id} className={`notif-item ${!notif.is_read ? 'unread' : ''}`} onClick={() => markAsRead(notif.id)} style={{ cursor: 'pointer' }}>
+                                <div style={{ fontWeight: '600', marginBottom: '4px' }}>{notif.title}</div>
+                                <div style={{ color: 'var(--text-muted)' }}>{notif.message}</div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
 
-              <div style={{ width: '1px', height: '24px', background: 'var(--border-color)' }}></div>
+                  <div style={{ width: '1px', height: '24px', background: 'var(--border-color)' }}></div>
 
-              <Link to="/profile" title={user.name} onClick={handleMenuClick} style={{ display: 'block' }}>
-                {user.profile_pic ? (
-                  <img src={`${API_URL}${user.profile_pic}`} alt="Profile" style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid transparent', transition: 'border-color 0.2s' }} />
-                ) : (
-                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#F3F4F6', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--text-muted)' }}>
-                    <User size={18} />
-                  </div>
-                )}
-              </Link>
+                  <Link to="/profile" title={user.name} onClick={handleMenuClick} style={{ display: 'block' }}>
+                    {user.profile_pic ? (
+                      <img src={`${API_URL}${user.profile_pic}`} alt="Profile" style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid transparent', transition: 'border-color 0.2s' }} />
+                    ) : (
+                      <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#F3F4F6', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--text-muted)' }}>
+                        <User size={18} />
+                      </div>
+                    )}
+                  </Link>
 
-              <button onClick={() => { handleMenuClick(); onLogout(); }} title="Logout" style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}>
-                <LogOut size={20} />
-              </button>
+                  <button onClick={() => { handleMenuClick(); onLogout(); }} title="Logout" style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}>
+                    <LogOut size={20} />
+                  </button>
+                </div>
+              ) : (
+                <Link to="/auth" className="btn btn-primary" onClick={handleMenuClick}>
+                  Login / Register
+                </Link>
+              )}
             </div>
-          ) : (
-            <Link to="/auth" className="btn btn-primary" onClick={handleMenuClick}>
-              Login / Register
-            </Link>
-          )}
-        </div>
+          </>
+        )}
       </div>
     </nav>
   );
