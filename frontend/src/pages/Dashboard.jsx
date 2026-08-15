@@ -373,8 +373,8 @@ export default function Dashboard({ user }) {
                   items.map(item => (
                     <tr key={item.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                       <td style={{ ...tdStyle, fontWeight: '600' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <img src={item.image_url} alt={item.name} style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }} />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontWeight: '500' }}>
+                          <img src={item.image_url?.startsWith('http') ? item.image_url : `${API_URL}${item.image_url}`} alt={item.name} style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }} />
                           {item.name}
                         </div>
                       </td>

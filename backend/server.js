@@ -38,11 +38,51 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
     fileFilter
 });
+
 app.use('/uploads', express.static(uploadDir));
 
 // Dummy Data Fallback
-const dummyItems = [];
-
+const dummyItems = [
+    {
+        id: 1,
+        name: "MacBook Pro M2 2023",
+        price_per_day: 250000,
+        description: "MacBook Pro M2 dengan RAM 16GB dan SSD 512GB. Sangat cocok untuk editing video, rendering, dan coding berat. Kondisi mulus 99%.",
+        location: "Jakarta Selatan",
+        vendor_id: 2,
+        vendor_name: "TechRent ID",
+        image_url: "/placeholder.jpg",
+        rating: 4.8,
+        reviews_count: 24,
+        is_visible: true
+    },
+    {
+        id: 2,
+        name: "Sony A7IV Body Only",
+        price_per_day: 350000,
+        description: "Kamera mirrorless hybrid terbaik. Resolusi 33MP, 4K 60fps video. Sudah termasuk 2 baterai dan charger. Lensa disewakan terpisah.",
+        location: "Bandung",
+        vendor_id: 2,
+        vendor_name: "TechRent ID",
+        image_url: "/placeholder.jpg",
+        rating: 4.9,
+        reviews_count: 56,
+        is_visible: true
+    },
+    {
+        id: 3,
+        name: "Tenda Eiger 4 Orang",
+        price_per_day: 50000,
+        description: "Tenda dome kapasitas 4 orang. Waterproof dan windproof. Cocok untuk camping di gunung atau pantai. Ringan dibawa.",
+        location: "Yogyakarta",
+        vendor_id: 3,
+        vendor_name: "Outdoor Gear Jogja",
+        image_url: "/placeholder.jpg",
+        rating: 4.5,
+        reviews_count: 12,
+        is_visible: true
+    }
+];
 const dummyReviews = [];
 
 // DB Connection config

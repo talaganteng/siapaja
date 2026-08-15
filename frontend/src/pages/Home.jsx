@@ -109,7 +109,7 @@ export default function Home() {
                 <Link to={`/item/${item.id}`} key={item.id}>
                   <div className="product-card">
                     <div className="product-img-wrapper">
-                      <img src={item.image_url} alt={item.name} className="product-img" />
+                      <img src={item.image_url?.startsWith('http') ? item.image_url : `${API_URL}${item.image_url}`} alt={item.name} className="product-img" />
                     </div>
                     <div className="product-info">
                       <h3 className="product-title">{item.name}</h3>

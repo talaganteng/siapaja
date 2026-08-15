@@ -138,8 +138,8 @@ export default function ProductDetail({ user }) {
     <div className="container" style={{ paddingBottom: '80px' }}>
       <div className="detail-container">
         {/* Left Column - Image */}
-        <div>
-          <img src={item.image_url} alt={item.name} className="detail-img" />
+        <div className="product-img-wrapper" style={{ height: 'auto', maxHeight: '500px' }}>
+          <img src={item.image_url?.startsWith('http') ? item.image_url : `${API_URL}${item.image_url}`} alt={item.name} className="detail-img" />
         </div>
 
         {/* Right Column - Info */}
