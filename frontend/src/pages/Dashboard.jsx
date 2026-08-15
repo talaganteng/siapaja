@@ -1,6 +1,6 @@
-﻿import { API_URL } from '../config';
+import { API_URL } from '../config';
 import { useState, useEffect, useRef } from 'react';
-import { DollarSign, Activity, ShoppingCart, CheckCircle, Package, Edit, Trash2, Eye, EyeOff, Plus, MessageSquare, X, UploadCloud, Star } from 'lucide-react';
+import { DollarSign, Activity, ShoppingCart, CheckCircle, Package, Edit, Trash2, Eye, EyeOff, Plus, MessageSquare, X, UploadCloud, Star, Loader } from 'lucide-react';
 
 export default function Dashboard({ user }) {
   const [stats, setStats] = useState(null);
@@ -235,7 +235,12 @@ export default function Dashboard({ user }) {
     }
   };
 
-  if (loading) return <div className="container" style={{ marginTop: '40px' }}>Memuat dasbor...</div>;
+  if (loading) return (
+    <div className="container" style={{ marginTop: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
+      <Loader size={48} style={{ animation: 'spin 2s linear infinite', color: 'var(--primary-color)', marginBottom: '16px' }} />
+      <p style={{ fontSize: '1.2rem' }}>Mempersiapkan Dasbor...</p>
+    </div>
+  );
 
   return (
     <div className="container" style={{ marginTop: '40px', paddingBottom: '60px' }}>

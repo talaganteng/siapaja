@@ -1,4 +1,4 @@
-﻿import { API_URL } from '../config';
+import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Star, ShieldCheck, MapPin, MessageSquare, Calendar as CalendarIcon, Info, X } from 'lucide-react';
@@ -70,8 +70,14 @@ export default function ProductDetail({ user }) {
     }
   }, [startDate, endDate, id]);
 
+  const isRangeValid = () => {
+    if (!startDate || !endDate) return false;
+    const range = eachDayOfInterval({ start: startDate, end: endDate });
+    return !range.some(day => bookedDates.some(booked => booked.setHours(0,0,0,0) === day.setHours(0,0,0,0)));
+  };
+
   const handleBooking = () => {
-    if (!startDate || !endDate || !user || !pricing) return;
+    if (!startDate || !endDate || !user || !pricing || !isRangeValid()) return;
     setIsBooking(true);
     
     fetch(`${API_URL}/api/bookings`, {
@@ -95,7 +101,7 @@ export default function ProductDetail({ user }) {
           if (data.booking && data.booking.id) {
               navigate(`/checkout/${data.booking.id}`);
           } else {
-              alert('Gagal membuat pesanan.');
+              alert(data.message || 'Gagal membuat pesanan.');
           }
       })
       .catch(err => {
@@ -220,14 +226,19 @@ export default function ProductDetail({ user }) {
 
                 {!bookingSuccess && (
                   <>
+                    {!isRangeValid() && startDate && endDate && (
+                      <div style={{ color: '#EF4444', textAlign: 'center', marginBottom: '12px', fontSize: '0.9rem', fontWeight: '500' }}>
+                        Rentang tanggal yang Anda pilih bertabrakan dengan pesanan lain. Silakan pilih tanggal lain.
+                      </div>
+                    )}
                     {user && user.role === 'customer' && (
                       <button 
                         className="btn btn-primary" 
                         onClick={handleBooking}
-                        disabled={!startDate || !endDate || isBooking}
-                        style={{ padding: '16px', fontSize: '1.1rem', opacity: (!startDate || !endDate || isBooking) ? 0.5 : 1 }}
+                        disabled={!startDate || !endDate || isBooking || !isRangeValid()}
+                        style={{ padding: '16px', fontSize: '1.1rem', opacity: (!startDate || !endDate || isBooking || !isRangeValid()) ? 0.5 : 1 }}
                       >
-                        {isBooking ? 'Memproses...' : (startDate && endDate ? 'Lanjutkan ke Pembayaran' : 'Pilih Tanggal Dulu')}
+                        {isBooking ? 'Memproses...' : (startDate && endDate ? (isRangeValid() ? 'Lanjutkan ke Pembayaran' : 'Tanggal Tidak Valid') : 'Pilih Tanggal Dulu')}
                       </button>
                     )}
                     

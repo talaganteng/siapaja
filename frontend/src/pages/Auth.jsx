@@ -1,13 +1,14 @@
-﻿import { API_URL } from '../config';
+import { API_URL } from '../config';
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UploadCloud } from 'lucide-react';
+import { UploadCloud, Eye, EyeOff } from 'lucide-react';
 
 export default function Auth({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState('customer');
   const [profilePic, setProfilePic] = useState(null);
   const [error, setError] = useState('');
@@ -109,14 +110,32 @@ export default function Auth({ onLogin }) {
 
           <div>
             <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-muted)' }}>Password</label>
-            <input 
-              type="password" 
-              required 
-              value={password} 
-              onChange={e => setPassword(e.target.value)} 
-              className="chat-input" 
-              style={{ width: '100%', padding: '12px 16px', boxSizing: 'border-box' }}
-            />
+            <div style={{ position: 'relative' }}>
+              <input 
+                type={showPassword ? 'text' : 'password'} 
+                required 
+                value={password} 
+                onChange={e => setPassword(e.target.value)} 
+                className="chat-input" 
+                style={{ width: '100%', padding: '12px 16px', boxSizing: 'border-box', paddingRight: '48px' }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: 'var(--text-muted)'
+                }}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
           </div>
 
           {!isLogin && (

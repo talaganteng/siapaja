@@ -1,4 +1,4 @@
-﻿import { API_URL } from '../config';
+import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Star, MapPin, ArrowRight } from 'lucide-react';
@@ -19,6 +19,19 @@ export default function Home() {
         setLoading(false);
       });
   }, []);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [locationFilter, setLocationFilter] = useState('');
+
+  // Extract unique locations from items
+  const uniqueLocations = [...new Set(items.map(item => item.location))].filter(Boolean);
+
+  const filteredItems = items.filter(item => {
+    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesLocation = locationFilter ? item.location === locationFilter : true;
+    return matchesSearch && matchesLocation;
+  });
 
   return (
     <>
@@ -47,10 +60,31 @@ export default function Home() {
       {/* Catalog Section */}
       <section id="katalog" style={{ paddingTop: '80px', paddingBottom: '120px' }}>
         <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px' }}>
             <div>
               <h2 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '8px' }}>Rekomendasi Kami</h2>
               <p className="text-muted">Barang pilihan dengan rating tertinggi minggu ini.</p>
+            </div>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <input 
+                type="text" 
+                placeholder="Cari barang..." 
+                className="chat-input" 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{ padding: '12px 16px', width: '250px', background: 'var(--card-bg)' }}
+              />
+              <select 
+                className="chat-input"
+                value={locationFilter}
+                onChange={(e) => setLocationFilter(e.target.value)}
+                style={{ padding: '12px 16px', background: 'var(--card-bg)' }}
+              >
+                <option value="">Semua Lokasi</option>
+                {uniqueLocations.map(loc => (
+                  <option key={loc} value={loc}>{loc}</option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -60,9 +94,14 @@ export default function Home() {
               <div className="skeleton skeleton-card"></div>
               <div className="skeleton skeleton-card"></div>
             </div>
+          ) : filteredItems.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '64px 20px', background: 'var(--card-bg)', borderRadius: '16px', border: '1px dashed var(--border-color)' }}>
+              <h3 style={{ marginBottom: '8px' }}>Barang Tidak Ditemukan</h3>
+              <p style={{ color: 'var(--text-muted)' }}>Coba sesuaikan kata kunci pencarian atau lokasi Anda.</p>
+            </div>
           ) : (
             <div className="grid">
-              {items.map(item => (
+              {filteredItems.map(item => (
                 <Link to={`/item/${item.id}`} key={item.id}>
                   <div className="product-card">
                     <div className="product-img-wrapper">

@@ -25,7 +25,19 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, uploadDir),
     filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
 });
-const upload = multer({ storage });
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Hanya format JPG, PNG, dan WEBP yang diizinkan'), false);
+    }
+};
+const upload = multer({ 
+    storage, 
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+    fileFilter
+});
 app.use('/uploads', express.static(uploadDir));
 
 // Dummy Data Fallback
@@ -143,6 +155,25 @@ app.post('/api/bookings/calculate', (req, res) => {
 
 app.post('/api/bookings', (req, res) => {
     const { itemId, startDate, endDate, durationDays, totalCost, depositFee, rentCost, customerId, customerName } = req.body;
+
+    // Cek pemesanan ganda (Double Booking)
+    const reqStart = new Date(startDate).setHours(0,0,0,0);
+    const reqEnd = new Date(endDate).setHours(0,0,0,0);
+    
+    const isOverlapping = dummyBookings.some(b => {
+        if (b.item_id !== itemId) return false;
+        if (b.status === 'CANCELLED') return false;
+        
+        const bStart = new Date(b.start_date).setHours(0,0,0,0);
+        const bEnd = new Date(b.end_date).setHours(0,0,0,0);
+        
+        return (reqStart <= bEnd && reqEnd >= bStart);
+    });
+
+    if (isOverlapping) {
+        return res.status(400).json({ message: 'Barang sudah disewa pada tanggal tersebut.' });
+    }
+
     // In real app, START TRANSACTION, INSERT into bookings, COMMIT
     const newBooking = {
         id: dummyBookings.length + 1,
@@ -195,7 +226,7 @@ app.post('/api/payments/webhook', (req, res) => {
 });
 
 app.post('/api/transactions/complete', (req, res) => {
-    const { bookingId, hasDamage } = req.body;
+    const { bookingId, hasDamage, returnDate } = req.body; // returnDate can be passed from frontend
     const booking = dummyBookings.find(b => b.id === parseInt(bookingId));
     if (!booking) return res.status(404).json({ message: 'Booking not found' });
 
@@ -206,11 +237,25 @@ app.post('/api/transactions/complete', (req, res) => {
     const vendorRevenue = booking.rent_cost * (1 - platformFeePercentage);
     const platformRevenue = booking.rent_cost * platformFeePercentage;
 
-    // Deposit Logic
+    // Penalty Logic
     let refundedDeposit = booking.deposit_fee;
-    if (hasDamage) {
-        refundedDeposit = 0; // Or partial refund depending on damage
+    let latePenalty = 0;
+    
+    // 1. Late fee (Telat kembali)
+    const expectedEndDate = new Date(booking.end_date).setHours(0,0,0,0);
+    const actualReturnDate = returnDate ? new Date(returnDate).setHours(0,0,0,0) : new Date().setHours(0,0,0,0);
+    
+    if (actualReturnDate > expectedEndDate) {
+        const lateDays = Math.ceil((actualReturnDate - expectedEndDate) / (1000 * 60 * 60 * 24));
+        const item = dummyItems.find(i => i.id === booking.item_id);
+        const pricePerDay = item ? item.price_per_day : 0;
+        latePenalty = lateDays * (pricePerDay * 1.5); // Denda 1.5x harga per hari
     }
+
+    // 2. Damage fee
+    const damagePenalty = hasDamage ? booking.deposit_fee : 0;
+
+    refundedDeposit = Math.max(0, booking.deposit_fee - latePenalty - damagePenalty);
 
     booking.status = 'COMPLETED';
     
@@ -221,7 +266,9 @@ app.post('/api/transactions/complete', (req, res) => {
             vendorRevenue,
             platformRevenue,
             refundedDeposit,
-            damagePenalty: hasDamage ? booking.deposit_fee : 0
+            damagePenalty,
+            latePenalty,
+            lateDays: Math.ceil((actualReturnDate - expectedEndDate) / (1000 * 60 * 60 * 24)) > 0 ? Math.ceil((actualReturnDate - expectedEndDate) / (1000 * 60 * 60 * 24)) : 0
         }
     });
 });

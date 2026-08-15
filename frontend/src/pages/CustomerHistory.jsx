@@ -1,6 +1,6 @@
-﻿import { API_URL } from '../config';
+import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
-import { Package, ArrowLeft } from 'lucide-react';
+import { Package, ArrowLeft, Loader, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function CustomerHistory({ user }) {
@@ -22,7 +22,7 @@ export default function CustomerHistory({ user }) {
 
   return (
     <div className="container" style={{ paddingBottom: '80px', marginTop: '24px' }}>
-      <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '24px', color: 'var(--text-muted)' }}>
+      <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '24px', color: 'var(--text-muted)', textDecoration: 'none', fontWeight: '500' }}>
         <ArrowLeft size={16} /> Kembali ke Katalog
       </Link>
       
@@ -33,10 +33,16 @@ export default function CustomerHistory({ user }) {
         </div>
 
         {loading ? (
-          <p style={{ color: 'var(--text-muted)' }}>Memuat riwayat...</p>
+          <div style={{ padding: '60px 20px', textAlign: 'center', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+            <Loader size={32} style={{ animation: 'spin 2s linear infinite', color: 'var(--primary-color)' }} />
+            <p>Memuat riwayat...</p>
+          </div>
         ) : history.length === 0 ? (
-          <div style={{ padding: '40px', textAlign: 'center', background: 'var(--bg-color)', borderRadius: '12px', color: 'var(--text-muted)' }}>
-            Belum ada riwayat penyewaan.
+          <div style={{ padding: '64px 20px', textAlign: 'center', background: 'var(--card-bg)', borderRadius: '16px', border: '1px dashed var(--border-color)' }}>
+            <ShoppingBag size={48} style={{ margin: '0 auto 16px', color: 'var(--text-muted)', opacity: 0.5 }} />
+            <h3 style={{ marginBottom: '8px' }}>Belum ada riwayat penyewaan</h3>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>Anda belum menyewa barang apa pun. Yuk, eksplor katalog!</p>
+            <Link to="/" className="btn btn-primary" style={{ display: 'inline-block' }}>Eksplor Sekarang</Link>
           </div>
         ) : (
           <div style={{ overflowX: 'auto' }}>
