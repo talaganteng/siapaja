@@ -103,7 +103,7 @@ export default function Navbar({ user, onLogout }) {
                 )}
                 <span className="text-sm" style={{ fontWeight: '600', maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block', lineHeight: 1 }}>{user.name}</span>
               </Link>
-              <button onClick={() => { handleMenuClick(); onLogout(); }} className="btn btn-primary" style={{ display: 'flex', gap: '8px', background: 'transparent', border: '1px solid var(--primary-color)', color: 'var(--primary-color)', alignItems: 'center' }}>
+              <button onClick={() => { handleMenuClick(); onLogout(); }} className="btn btn-outline" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                 <LogOut size={16} /> Logout
               </button>
             </>

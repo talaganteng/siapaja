@@ -8,7 +8,7 @@ async function insertData() {
             port: 4000,
             user: 'MBnjyDAqyUp1LxV.root',
             password: 'HNAtpvbQDgDciM5y',
-            database: 'test',
+            database: 'siapaja',
             ssl: { minVersion: 'TLSv1.2', rejectUnauthorized: true }
         });
         
